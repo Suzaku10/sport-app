@@ -7,8 +7,8 @@ import 'package:sport_app_example/data/remote/league/league.dart';
 import 'package:sport_app_example/data/remote/team/team.dart';
 import 'package:sport_app_example/material/generic_scaffold.dart';
 import 'package:sport_app_example/router/app_router.gr.dart';
-import 'package:sport_app_example/store/list_club_store/list_club_store.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:sport_app_example/store/list_club/list_club_store.dart';
 
 class ListClubPage extends StatefulWidget {
   final String? param;

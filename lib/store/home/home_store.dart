@@ -12,7 +12,7 @@ class HomeStore = _HomeStore with _$HomeStore;
 
 abstract class _HomeStore with Store {
   SportRepositoryImpl _sportRepositoryImpl = SportRepositoryImpl();
-  ScaffoldStore store = GetIt.I.get<ScaffoldStore>();
+  ScaffoldStore _store = GetIt.I.get<ScaffoldStore>();
 
   @observable
   String country = default_country;
@@ -46,7 +46,7 @@ abstract class _HomeStore with Store {
           ObservableFuture(_sportRepositoryImpl.fetchAllCountry());
       countries = await _countriesFuture;
     } catch (e) {
-      store.setMessage(error_message);
+      _store.setMessage(error_message);
     }
   }
 }

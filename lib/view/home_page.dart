@@ -46,17 +46,17 @@ class _HomePageState extends State<HomePage> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 child: Observer(
-                  builder: (_) => Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        "${_homeStore?.country}",
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                      ),
-                      Icon(Icons.arrow_drop_down_sharp)
-                    ],
-                  )
-                ),
+                    builder: (_) => Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              "${_homeStore?.country}",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 16),
+                            ),
+                            Icon(Icons.arrow_drop_down_sharp)
+                          ],
+                        )),
               ),
             ),
           ),
@@ -153,7 +153,7 @@ class _HomePageState extends State<HomePage> {
       );
     } else {
       await context.pushRoute(
-        ListClubRoute(param: "Italy"),
+        ListLeagueRoute(country: _homeStore?.country),
       );
     }
   }

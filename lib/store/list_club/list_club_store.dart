@@ -14,7 +14,7 @@ class ListClubStore = _ListClubStore with _$ListClubStore;
 
 abstract class _ListClubStore with Store {
   SportRepositoryImpl _sportRepositoryImpl = SportRepositoryImpl();
-  ScaffoldStore store = GetIt.I.get<ScaffoldStore>();
+  ScaffoldStore _store = GetIt.I.get<ScaffoldStore>();
 
   @observable
   CountryResponse? countries;
@@ -74,7 +74,7 @@ abstract class _ListClubStore with Store {
           ObservableFuture(_sportRepositoryImpl.fetchAllCountry());
       countries = await _countriesFuture;
     } catch (e) {
-      store.setMessage(error_message);
+      _store.setMessage(error_message);
     }
   }
 
@@ -85,7 +85,7 @@ abstract class _ListClubStore with Store {
           _sportRepositoryImpl.fetchLeaguesInCountry(country: country));
       leagues = await _leagueFuture;
     } catch (e) {
-      store.setMessage(error_message);
+      _store.setMessage(error_message);
     }
   }
 
@@ -103,9 +103,9 @@ abstract class _ListClubStore with Store {
       }
 
       teams = await _teamsFuture;
-      store.setMessage(success_message);
+      _store.setMessage(success_message);
     } catch (e) {
-      store.setMessage(error_message);
+      _store.setMessage(error_message);
     }
   }
 
@@ -116,9 +116,9 @@ abstract class _ListClubStore with Store {
           _sportRepositoryImpl.searchTeamByKeyword(keyword: keyword));
       
       teams = await _teamsFuture;
-      store.setMessage(success_message);
+      _store.setMessage(success_message);
     } catch (e) {
-      store.setMessage(error_message);
+      _store.setMessage(error_message);
     }
   }
 }
