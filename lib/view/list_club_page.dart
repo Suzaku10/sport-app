@@ -5,6 +5,8 @@ import 'package:sport_app_example/data/constant/color.dart';
 import 'package:sport_app_example/data/constant/enum.dart';
 import 'package:sport_app_example/data/remote/league/league.dart';
 import 'package:sport_app_example/data/remote/team/team.dart';
+import 'package:sport_app_example/material/empty_widget.dart';
+import 'package:sport_app_example/material/error_widget.dart';
 import 'package:sport_app_example/material/generic_scaffold.dart';
 import 'package:sport_app_example/router/app_router.gr.dart';
 import 'package:auto_route/auto_route.dart';
@@ -60,11 +62,11 @@ class _ListClubPageState extends State<ListClubPage> {
                 child: CircularProgressIndicator(),
               );
             case NetworkState.loaded:
-              return _listClubWidget;
+              return _clubStore?.teams?.teams == null
+                  ? EmptyWidget()
+                  : _listClubWidget;
             case NetworkState.error:
-              return Center(
-                child: Text("Something Error"),
-              );
+              return SomethingErrorWidget();
             default:
               return Container();
           }

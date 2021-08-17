@@ -57,8 +57,10 @@ class AppRouter extends _i1.RootStackRouter {
           final pathParams = data.pathParams;
           final args = data.argsAs<LeagueDetailRouteArgs>(
               orElse: () => LeagueDetailRouteArgs(
-                  leagueId: pathParams.optString('leagueId')));
-          return _i7.LeagueDetailPage(leagueId: args.leagueId);
+                  leagueId: pathParams.optString('leagueId'),
+                  leagueName: pathParams.optString('leagueName')));
+          return _i7.LeagueDetailPage(
+              leagueId: args.leagueId, leagueName: args.leagueName);
         })
   };
 
@@ -69,7 +71,7 @@ class AppRouter extends _i1.RootStackRouter {
         _i1.RouteConfig(SearchRoute.name, path: '/search/:inPage'),
         _i1.RouteConfig(ListLeagueRoute.name, path: '/list-league/:country'),
         _i1.RouteConfig(LeagueDetailRoute.name,
-            path: '/league-detail/:leagueId')
+            path: '/league-detail/:leagueId:leagueName')
       ];
 }
 
@@ -128,17 +130,20 @@ class ListLeagueRouteArgs {
 }
 
 class LeagueDetailRoute extends _i1.PageRouteInfo<LeagueDetailRouteArgs> {
-  LeagueDetailRoute({String? leagueId})
+  LeagueDetailRoute({String? leagueId, String? leagueName})
       : super(name,
-            path: '/league-detail/:leagueId',
-            args: LeagueDetailRouteArgs(leagueId: leagueId),
-            rawPathParams: {'leagueId': leagueId});
+            path: '/league-detail/:leagueId:leagueName',
+            args: LeagueDetailRouteArgs(
+                leagueId: leagueId, leagueName: leagueName),
+            rawPathParams: {'leagueId': leagueId, 'leagueName': leagueName});
 
   static const String name = 'LeagueDetailRoute';
 }
 
 class LeagueDetailRouteArgs {
-  const LeagueDetailRouteArgs({this.leagueId});
+  const LeagueDetailRouteArgs({this.leagueId, this.leagueName});
 
   final String? leagueId;
+
+  final String? leagueName;
 }

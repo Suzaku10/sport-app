@@ -37,10 +37,14 @@ abstract class _ListLeagueStore with Store {
       _leaguesFuture = ObservableFuture(
           _sportRepositoryImpl.fetchLeaguesInCountry(country: country));
       leagues = await _leaguesFuture;
-
+      if (leagues?.countrys == null) throw empty_message;
       _store.setMessage(success_message);
     } catch (e) {
-      _store.setMessage(error_message);
+      if (e == empty_message) {
+        _store.setMessage(empty_message);
+      } else {
+        _store.setMessage(error_message);
+      }
     }
   }
 }

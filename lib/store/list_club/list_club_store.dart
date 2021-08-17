@@ -103,9 +103,14 @@ abstract class _ListClubStore with Store {
       }
 
       teams = await _teamsFuture;
+      if (teams?.teams == null) throw empty_message;
       _store.setMessage(success_message);
     } catch (e) {
-      _store.setMessage(error_message);
+      if (e == empty_message) {
+        _store.setMessage(empty_message);
+      } else {
+        _store.setMessage(error_message);
+      }
     }
   }
 
@@ -114,11 +119,16 @@ abstract class _ListClubStore with Store {
     try {
       _teamsFuture = ObservableFuture(
           _sportRepositoryImpl.searchTeamByKeyword(keyword: keyword));
-      
+
       teams = await _teamsFuture;
+      if (teams?.teams == null) throw empty_message;
       _store.setMessage(success_message);
     } catch (e) {
-      _store.setMessage(error_message);
+      if (e == empty_message) {
+        _store.setMessage(empty_message);
+      } else {
+        _store.setMessage(error_message);
+      }
     }
   }
 }

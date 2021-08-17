@@ -5,10 +5,11 @@ import 'package:get_it/get_it.dart';
 import 'package:sport_app_example/data/constant/color.dart';
 import 'package:sport_app_example/data/constant/enum.dart';
 import 'package:sport_app_example/data/remote/league/league.dart';
+import 'package:sport_app_example/material/empty_widget.dart';
+import 'package:sport_app_example/material/error_widget.dart';
 import 'package:sport_app_example/material/generic_scaffold.dart';
 import 'package:sport_app_example/router/app_router.gr.dart';
 import 'package:sport_app_example/store/list_league/list_league_store.dart';
-import 'package:sport_app_example/view/league_detail_page.dart';
 
 class ListLeaguePage extends StatefulWidget {
   final String? country;
@@ -43,18 +44,19 @@ class _ListLeaguePageState extends State<ListLeaguePage> {
                 child: CircularProgressIndicator(),
               );
             case NetworkState.loaded:
-              return ListView.separated(
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                itemCount: (_leagueStore?.leagues?.countrys?.length ?? 0),
-                itemBuilder: (context, index) =>
-                    _itemLeagueWidget(_leagueStore?.leagues?.countrys![index]),
-                separatorBuilder: (context, index) =>
-                    Container(height: 1, width: double.infinity, color: black),
-              );
+              return _leagueStore?.leagues?.countrys == null
+                  ? EmptyWidget()
+                  : ListView.separated(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      itemCount: (_leagueStore?.leagues?.countrys?.length ?? 0),
+                      itemBuilder: (context, index) => _itemLeagueWidget(
+                          _leagueStore?.leagues?.countrys![index]),
+                      separatorBuilder: (context, index) => Container(
+                          height: 1, width: double.infinity, color: black),
+                    );
             case NetworkState.error:
-              return Center(
-                child: Text("Something Error"),
-              );
+              return SomethingErrorWidget();
             default:
               return Container();
           }
@@ -65,7 +67,7 @@ class _ListLeaguePageState extends State<ListLeaguePage> {
 
   Widget _itemLeagueWidget(League? league) {
     return InkWell(
-      onTap: () => _navigateToLeagueDetail(league?.idLeague),
+      onTap: () => _navigateToLeagueDetail(league?.idLeague, league?.strLeague),
       child: Container(
         alignment: Alignment.centerLeft,
         height: kToolbarHeight,
@@ -75,7 +77,8 @@ class _ListLeaguePageState extends State<ListLeaguePage> {
     );
   }
 
-  void _navigateToLeagueDetail(String? leagueId) {
-    context.pushRoute(LeagueDetailRoute(leagueId: leagueId));
+  void _navigateToLeagueDetail(String? leagueId, String? leagueName) {
+    context.pushRoute(
+        LeagueDetailRoute(leagueId: leagueId, leagueName: leagueName));
   }
 }

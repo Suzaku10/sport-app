@@ -12,7 +12,8 @@ import 'package:sport_app_example/view/search_page.dart';
     AutoRoute(page: ListClubPage, path: '/list-club/:param'),
     AutoRoute(page: SearchPage, path: '/search/:inPage'),
     AutoRoute(page: ListLeaguePage, path: '/list-league/:country'),
-    AutoRoute(page: LeagueDetailPage, path: '/league-detail/:leagueId'),
+    AutoRoute(
+        page: LeagueDetailPage, path: '/league-detail/:leagueId:leagueName'),
   ],
 )
 class $AppRouter {}

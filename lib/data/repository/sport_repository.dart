@@ -1,4 +1,5 @@
 import 'package:sport_app_example/data/remote/response/country_response/country_response.dart';
+import 'package:sport_app_example/data/remote/response/event_response/event_response.dart';
 import 'package:sport_app_example/data/remote/response/league_response/league_response.dart';
 import 'package:sport_app_example/data/remote/response/team_response/team_response.dart';
 import 'package:sport_app_example/data/repository/sport_service.dart';
@@ -13,6 +14,9 @@ abstract class SportRepository {
   Future<TeamResponse> fetchTeamsByLeague({String? league});
 
   Future<TeamResponse> searchTeamByKeyword({String? keyword});
+
+  Future<EventResponse> leagueDetailInSeason(
+      {String? leagueId, String? season});
 }
 
 class SportRepositoryImpl extends SportRepository {
@@ -41,5 +45,11 @@ class SportRepositoryImpl extends SportRepository {
   @override
   Future<TeamResponse> searchTeamByKeyword({String? keyword}) async {
     return await _service.searchTeamByName(name: keyword);
+  }
+
+  @override
+  Future<EventResponse> leagueDetailInSeason(
+      {String? leagueId, String? season}) async {
+    return await _service.leagueDetail(leagueId: leagueId, season: season);
   }
 }
