@@ -2,6 +2,7 @@ import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 import 'package:sport_app_example/data/constant/const_variable.dart';
 import 'package:sport_app_example/data/constant/enum.dart';
+import 'package:sport_app_example/data/remote/country/country.dart';
 import 'package:sport_app_example/data/remote/response/country_response/country_response.dart';
 import 'package:sport_app_example/data/repository/sport_repository.dart';
 import 'package:sport_app_example/store/scaffold/scaffold_store.dart';
@@ -19,6 +20,9 @@ abstract class _HomeStore with Store {
 
   @observable
   CountryResponse? countries;
+
+  @observable
+  CountryResponse? filteredCountries;
 
   @observable
   ObservableFuture? _countriesFuture;
@@ -48,5 +52,25 @@ abstract class _HomeStore with Store {
     } catch (e) {
       _store.setMessage(error_message);
     }
+  }
+
+  @action
+  void filterCountriesByKeyword(String? keyword) {
+    CountryResponse? _countries = countries;
+
+    List<Country>? _newCountries = _countries?.countries
+        ?.where(
+          (element) =>
+              element.nameEn!.toLowerCase().contains(keyword!.toLowerCase()),
+        )
+        .toList();
+    _countries = CountryResponse(countries: _newCountries);
+
+    filteredCountries = _countries;
+  }
+
+  @action
+  void clearFiltered() {
+    filteredCountries = null;
   }
 }

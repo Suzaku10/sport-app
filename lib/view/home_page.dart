@@ -19,11 +19,14 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   HomeStore? _homeStore;
+  late TextEditingController _controller;
 
   @override
   void initState() {
     _homeStore ??= GetIt.I.get<HomeStore>();
     _homeStore?.fetchAllCountry();
+    _homeStore?.clearFiltered();
+    _controller = TextEditingController();
     super.initState();
   }
 
@@ -118,18 +121,37 @@ class _HomePageState extends State<HomePage> {
               ),
             );
           case NetworkState.loaded:
-            return ListView.separated(
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              itemCount: (_homeStore?.countries?.countries?.length ?? 0),
-              itemBuilder: (context, index) =>
-                  _itemCountryWidget(_homeStore?.countries?.countries![index]),
-              separatorBuilder: (context, index) =>
-                  Container(height: 1, width: double.infinity, color: black),
-            );
+            return _listWidget();
           case NetworkState.error:
             return Text(error_message);
           default:
             return Container();
+        }
+      },
+    );
+  }
+
+  Widget _listWidget() {
+    return Observer(
+      builder: (_) {
+        if (_homeStore?.filteredCountries == null) {
+          return ListView.separated(
+            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            itemCount: (_homeStore?.countries?.countries?.length ?? 0),
+            itemBuilder: (context, index) =>
+                _itemCountryWidget(_homeStore?.countries?.countries![index]),
+            separatorBuilder: (context, index) =>
+                Container(height: 1, width: double.infinity, color: black),
+          );
+        } else {
+          return ListView.separated(
+            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            itemCount: (_homeStore?.filteredCountries?.countries?.length ?? 0),
+            itemBuilder: (context, index) => _itemCountryWidget(
+                _homeStore?.filteredCountries?.countries![index]),
+            separatorBuilder: (context, index) =>
+                Container(height: 1, width: double.infinity, color: black),
+          );
         }
       },
     );
@@ -147,6 +169,48 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  Widget _searchWidget() {
+    return Container(
+      constraints: BoxConstraints(maxHeight: kToolbarHeight - 10),
+      decoration: BoxDecoration(
+          border: Border.all(color: black),
+          borderRadius: BorderRadius.circular(16)),
+      child: Row(
+        children: [
+          Expanded(
+            child: TextField(
+              controller: _controller,
+              onChanged: (_) =>
+                  _homeStore?.filterCountriesByKeyword(_controller.text),
+              onSubmitted: (_) =>
+                  _homeStore?.filterCountriesByKeyword(_controller.text),
+              style: TextStyle(color: black),
+              decoration: InputDecoration(
+                  hintText: "Search Country",
+                  isDense: true,
+                  border: InputBorder.none,
+                  contentPadding:
+                      EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                  enabledBorder: InputBorder.none),
+            ),
+          ),
+          GestureDetector(
+            onTap: () => _clearSearch(),
+            child: Container(
+              child: Icon(Icons.close),
+              padding: EdgeInsets.symmetric(horizontal: 10),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  void _clearSearch() {
+    _homeStore?.clearFiltered();
+    _controller.clear();
+  }
+
   void _navigateToSource(String menu) async {
     if (menu == team_menu[0]) {
       await context.pushRoute(
@@ -160,11 +224,23 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _showBottomSheet() async {
+    _clearSearch();
     String? result = await showModalBottomSheet(
         context: context,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         builder: (_) {
-          return _listCountryWidget();
+          return Container(
+            constraints: BoxConstraints(
+                maxHeight: (MediaQuery.of(context).size.height * 2) / 3),
+            child: Column(
+              children: [
+                _searchWidget(),
+                Expanded(
+                  child: _listCountryWidget(),
+                )
+              ],
+            ),
+          );
         });
 
     if (result != null) {

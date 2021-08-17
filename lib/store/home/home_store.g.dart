@@ -47,6 +47,21 @@ mixin _$HomeStore on _HomeStore, Store {
     });
   }
 
+  final _$filteredCountriesAtom = Atom(name: '_HomeStore.filteredCountries');
+
+  @override
+  CountryResponse? get filteredCountries {
+    _$filteredCountriesAtom.reportRead();
+    return super.filteredCountries;
+  }
+
+  @override
+  set filteredCountries(CountryResponse? value) {
+    _$filteredCountriesAtom.reportWrite(value, super.filteredCountries, () {
+      super.filteredCountries = value;
+    });
+  }
+
   final _$_countriesFutureAtom = Atom(name: '_HomeStore._countriesFuture');
 
   @override
@@ -84,10 +99,33 @@ mixin _$HomeStore on _HomeStore, Store {
   }
 
   @override
+  void filterCountriesByKeyword(String? keyword) {
+    final _$actionInfo = _$_HomeStoreActionController.startAction(
+        name: '_HomeStore.filterCountriesByKeyword');
+    try {
+      return super.filterCountriesByKeyword(keyword);
+    } finally {
+      _$_HomeStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void clearFiltered() {
+    final _$actionInfo = _$_HomeStoreActionController.startAction(
+        name: '_HomeStore.clearFiltered');
+    try {
+      return super.clearFiltered();
+    } finally {
+      _$_HomeStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 country: ${country},
 countries: ${countries},
+filteredCountries: ${filteredCountries},
 countriesState: ${countriesState}
     ''';
   }
