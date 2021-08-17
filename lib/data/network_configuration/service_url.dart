@@ -9,6 +9,8 @@ class ServiceUrl {
 
   static String get teams => "$_version/$_format/search_all_teams.php";
 
+  static String get searchTeam => "$_version/$_format/searchteams.php";
+
   static String get leaguesByCountry =>
       "$_version/$_format/search_all_leagues.php";
 }

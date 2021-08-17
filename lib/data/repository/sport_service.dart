@@ -62,4 +62,18 @@ class SportService extends BaseServiceDio {
       throw Exception(e.toString());
     }
   }
+
+  Future<TeamResponse> searchTeamByName({String? name}) async{
+    try {
+      Map<String, dynamic> queryParameter = Map();
+      queryParameter.putIfAbsent("t", () => name);
+
+      final response =
+      await service.get(ServiceUrl.searchTeam, queryParameters: queryParameter);
+
+      return TeamResponse.fromJson(response);
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
 }

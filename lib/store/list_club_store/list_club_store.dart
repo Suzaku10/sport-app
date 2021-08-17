@@ -102,8 +102,21 @@ abstract class _ListClubStore with Store {
         throw Exception();
       }
 
-      store.setMessage(success_message);
       teams = await _teamsFuture;
+      store.setMessage(success_message);
+    } catch (e) {
+      store.setMessage(error_message);
+    }
+  }
+
+  @action
+  Future<void> searchTeamByKeyword({String? keyword}) async {
+    try {
+      _teamsFuture = ObservableFuture(
+          _sportRepositoryImpl.searchTeamByKeyword(keyword: keyword));
+      
+      teams = await _teamsFuture;
+      store.setMessage(success_message);
     } catch (e) {
       store.setMessage(error_message);
     }

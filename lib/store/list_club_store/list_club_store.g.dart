@@ -145,6 +145,15 @@ mixin _$ListClubStore on _ListClubStore, Store {
         .run(() => super.fetchTeams(country: country, league: league));
   }
 
+  final _$searchTeamByKeywordAsyncAction =
+      AsyncAction('_ListClubStore.searchTeamByKeyword');
+
+  @override
+  Future<void> searchTeamByKeyword({String? keyword}) {
+    return _$searchTeamByKeywordAsyncAction
+        .run(() => super.searchTeamByKeyword(keyword: keyword));
+  }
+
   @override
   String toString() {
     return '''

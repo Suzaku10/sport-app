@@ -11,6 +11,8 @@ abstract class SportRepository {
   Future<LeagueResponse> fetchLeaguesInCountry({String? country});
 
   Future<TeamResponse> fetchTeamsByLeague({String? league});
+
+  Future<TeamResponse> searchTeamByKeyword({String? keyword});
 }
 
 class SportRepositoryImpl extends SportRepository {
@@ -34,5 +36,10 @@ class SportRepositoryImpl extends SportRepository {
   @override
   Future<TeamResponse> fetchTeamsByLeague({String? league}) async {
     return await _service.fetchTeamsInLeague(league: league);
+  }
+
+  @override
+  Future<TeamResponse> searchTeamByKeyword({String? keyword}) async {
+    return await _service.searchTeamByName(name: keyword);
   }
 }

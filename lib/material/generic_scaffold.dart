@@ -37,18 +37,18 @@ class _GenericScaffoldState extends State<GenericScaffold> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-          appBar: widget.appBar,
-          body: Observer(builder: (_) {
-            switch (_store?.state) {
-              case ScaffoldMessageState.showMessage:
-                return _bodyBuilder;
-              case ScaffoldMessageState.initialMessage:
-                return widget.body ?? Container();
-              default:
-                return Container();
-            }
-          }),
-        ));
+      appBar: widget.appBar,
+      body: Observer(builder: (_) {
+        switch (_store?.state) {
+          case ScaffoldMessageState.showMessage:
+            return _bodyBuilder;
+          case ScaffoldMessageState.initialMessage:
+            return widget.body ?? Container();
+          default:
+            return Container();
+        }
+      }),
+    ));
   }
 
   Widget get _bodyBuilder {
@@ -62,8 +62,11 @@ class _GenericScaffoldState extends State<GenericScaffold> {
               height: kToolbarHeight,
               width: double.infinity,
               alignment: Alignment.center,
-              color: blue.withOpacity(0.4),
-              child: Text(_store?.message as String),
+              color: black.withOpacity(0.4),
+              child: Text(
+                _store?.message as String,
+                style: TextStyle(color: white),
+              ),
             ),
           ),
         )
